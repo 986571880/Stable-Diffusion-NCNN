@@ -1,8 +1,11 @@
 name: Build for android
 on:
   workflow_dispatch:
+  push:
+  
 jobs:
   build:
+    environment: Android
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

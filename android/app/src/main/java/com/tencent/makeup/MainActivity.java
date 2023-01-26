@@ -15,6 +15,8 @@
 package com.tencent.makeup;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.pm.PackageManager;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -105,7 +107,7 @@ public class MainActivity extends Activity
             dir.mkdir();
         try {
             if (!(new File(filename)).exists()) {
-                InputStream is = myContext.getResources().getAssets().open(ASSETS_NAME);
+                InputStream is = getAssets().open(ASSETS_NAME);
                 FileOutputStream fos = new FileOutputStream(filename);
                 byte[] buffer = new byte[7168];
                 int count = 0;
@@ -117,6 +119,15 @@ public class MainActivity extends Activity
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public AssetManager getAssets() {
+        try {
+            return getPackageManager().getResourcesForApplication(BuildConfig.APPLICATION_ID+".assets").getAssets();
+        } catch (PackageManager.NameNotFoundException e) {
+            return super.getAssets();
         }
     }
 }

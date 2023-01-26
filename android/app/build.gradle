@@ -6,7 +6,7 @@ android {
     ndkVersion '23.2.8568313'
 
     defaultConfig {
-        applicationId "com.tencent.makeup"
+        applicationId "com.github.stablediffusion"
         archivesBaseName = "$applicationId"
 
         ndk {

@@ -22,6 +22,30 @@ android {
             path file('src/main/jni/CMakeLists.txt')
         }
     }
+
+    signingConfigs {
+        release {
+            storeFile file("../key.jks")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+        debug {
+            storeFile file("../key.jks")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+
     dependencies {
         implementation 'com.android.support:support-v4:24.0.0'
     }

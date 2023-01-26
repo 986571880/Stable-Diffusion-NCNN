@@ -11,32 +11,19 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.3
 
-    - name: Set up our JDK environment
+    - name: Set up JDK environment
       uses: actions/setup-java@v1.4.3
       with:
         java-version: 1.8
     
-    - name: Change wrapper permissions
-      run: chmod +x ./android/gradlew
-    - name: Build Project
-      working-directory: ./android
-      run: ./gradlew build --info
-    - name: Build Release
-      working-directory: ./android
-      run: ./gradlew assembleRelease
+    - name: Create keystore file
+      run: echo "${{ secrets.KEYSTORE }}" | base64 -d > android/key.jks
+  
+    - name: Build release
+      run: bash ./build_android.sh
 
-    - name: Sign artifact
-      id: signArtifact
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: android/app/build/outputs/apk/release
-        alias: ${{ secrets.KEYALIAS }}
-        signingKeyBase64: ${{ secrets.KEYSTORE }}
-        keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEY_PASSWORD }}
-
-    - name: Upload our APK
+    - name: Upload APK
       uses: actions/upload-artifact@v2
       with:
         name: Release artifact
-        path: android/app/build/outputs/apk/release/*-signed*.apk
+        path: android/app/build/outputs/apk/release/*.apk
